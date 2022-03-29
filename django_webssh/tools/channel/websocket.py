@@ -83,6 +83,7 @@ class WebSSH(WebsocketConsumer):
 
         self.ssh.connect(**ssh_connect_dict)
 
+
     def disconnect(self, close_code):
         try:
             self.ssh.close()
@@ -109,6 +110,8 @@ class WebSSH(WebsocketConsumer):
             ssh_args={"width":264,"height":23,"auth":"pwd","host":info.host,"user":info.user,"password":info.pwd,"port":info.port,"docker_name":info.docker_name}
             self.sshConnect(ssh_args)
             print("ssh链接的信息："+str(ssh_args))
+        elif data.get('type')=='quit':
+            self.disconnect(1)
         else:
             status = data['status']
             if status == 0:
@@ -118,3 +121,4 @@ class WebSSH(WebsocketConsumer):
                 cols = data['cols']
                 rows = data['rows']
                 self.ssh.resize_pty(cols=cols, rows=rows)
+

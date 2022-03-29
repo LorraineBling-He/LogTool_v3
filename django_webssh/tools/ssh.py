@@ -4,7 +4,6 @@ from django_webssh.tools.tools import get_key_obj
 import socket
 import json
 
-
 class SSH:
     def __init__(self, websocker, message):
         self.websocker = websocker

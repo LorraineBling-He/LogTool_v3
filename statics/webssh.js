@@ -12,7 +12,7 @@ function get_term_size() {
     }
 
 
-
+var sock;
 function websocket() {
     var storage=window.sessionStorage;
 
@@ -34,11 +34,11 @@ function websocket() {
     // let ws_scheme = window.location.protocol === "https:" ? "wss" : "ws"; //获取协议
     let ws_scheme = "ws";
     let ws_port = (window.location.port) ? (':' + window.location.port) : '';  // 获取端口
-    socketURL = ws_scheme + '://' + window.location.host + '/webssh/' ;
+    socketURL = ws_scheme + '://' + window.location.host + '/ws_webssh/' ;
     document.getElementById('name').innerText=info.name
     //建立连接，并发送服务器信息或者下拉选项的id号给后端
     try{
-       var sock = new WebSocket(socketURL);
+        sock = new WebSocket(socketURL);
     }
     catch(e){
         console.log("连接websocket时异常："+e);
@@ -76,8 +76,12 @@ function websocket() {
         var status = data.status;
         if (status === 0) {
             term.write(message)
-        } else {
+        } else if(status ===1) {
+            alert('连接超时，请检查连接信息是否正确，或是否连接了vpn')
+            window.close();
+        }else{
             window.location.reload()
+
         }
     });
 
@@ -110,7 +114,16 @@ function websocket() {
     })
 }
 
-
-
-
+    //监听页面一旦关闭就自动断开ssh
+    window.onbeforeunload = function () {
+        try {
+            info={'type':'quit'}
+            sock.send(JSON.stringify(info));
+            sock.close();
+            sock = null;
+        }
+        catch (ex) {
+            console.log(ex);
+        }
+    };
 window.onload=websocket()

@@ -24,7 +24,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index),
     path('upload_ssh_key/', views.upload_ssh_key),
-    path('django_webssh/', include('django_webssh.urls')),
+    # path('django_webssh/', include('django_webssh.urls')),
     path('webssh/', views.webssh),
+    path('is_login', views.is_login),
+    path('dele', views.dele),
 ]
 urlpatterns += static.static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

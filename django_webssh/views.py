@@ -1,11 +1,9 @@
-import json
-from idlelib import window
 
 from django.shortcuts import render, HttpResponse
 from django_webssh.tools.tools import unique
 from LogTool_v3.settings import TMP_DIR
 
-from django_pandas.io import read_frame
+
 
 import os
 
@@ -63,3 +61,6 @@ def dele(request):
 def webssh(request):
     print(request.GET)
     return render(request,'webssh.html')
+
+
+

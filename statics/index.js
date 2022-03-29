@@ -51,7 +51,7 @@ function connect(self) {
     var info;
     // window.location.replace('webssh')
     //首先判断用户是点的下拉选项还是新建的服务器
-    //如果是下拉选项，则传递给后台去查相应的服务器信息
+    //如果是下拉选项，则名称和type发送给后端
     if (self.id=="button1"){
         var index=document.getElementById("txt").selectedIndex;
         var tag=document.getElementById("txt").options[index].text;
@@ -61,15 +61,10 @@ function connect(self) {
         storage.setItem("name",info.name)
         console.log(info)
     }
-    //如果是新建的服务器，则拼接地址并发送服务器信息给后端
+    //如果是新建的服务器，则将所有信息发送到storage
     else{
         var info = get_connect_info();
         console.log(info);
-        // let ws_scheme = window.location.protocol === "https:" ? "wss" : "ws"; //获取协议
-        let ws_scheme = "ws";
-        let ws_port = (window.location.port) ? (':' + window.location.port) : '';  // 获取端口
-        // socketURL = ws_scheme + '://' + window.location.host + '/webssh/' + ssh_args ;
-        console.log(info)
         for(key in info){
             storage.setItem(key,info[key])
         }
@@ -82,7 +77,7 @@ function connect(self) {
     );
 }
 
-function dele(self) {
+function dele() {
     var xmlHttp=new createXMLRequest();
     var index=document.getElementById("txt").selectedIndex;
     var tag=document.getElementById("txt").options[index].text;
